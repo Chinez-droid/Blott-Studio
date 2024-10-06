@@ -2,7 +2,8 @@
 This is a stunning finance news app with the option to view a highlight of the news in a dashboard or navigate to an external site to access the detailed news content.
 
 ## 📽️ Demo
-https://github.com/user-attachments/assets/d5458782-88a3-4da9-aa09-c695cc6c08c1
+https://github.com/user-attachments/assets/4720c287-3f33-4fce-9286-f9f01302ee78
+
 
 
 ## 🔨 Tools

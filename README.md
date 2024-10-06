@@ -4,15 +4,6 @@ This is a stunning finance news app with the option to view a highlight of the n
 ## 📽️ Demo
 https://github.com/user-attachments/assets/a3eb61d0-6773-4103-b585-256932a12020
 
-## 📸 Screenshots
-![Screenshot_20241006-123020](https://github.com/user-attachments/assets/471caf20-0283-4b58-b8e0-9e82a4790483)
-![Screenshot_20241006-122844](https://github.com/user-attachments/assets/1800bf33-bc9b-4b81-82e0-bf9d392f731a)
-![Screenshot_20241006-122856](https://github.com/user-attachments/assets/d5937b7b-aad5-4fdb-8b9a-9591301722b8)
-![Screenshot_20241006-122901](https://github.com/user-attachments/assets/b6be34c6-48a5-4a7b-b1c6-fc853df0d9d2)
-![Screenshot_20241006-122906](https://github.com/user-attachments/assets/83134da4-217e-473c-bce8-cd5387d4bb46)
-![Screenshot_20241006-122947](https://github.com/user-attachments/assets/33f42789-fcc8-4a3b-997d-bf6c36e0fd59)
-![Screenshot_20241006-123054](https://github.com/user-attachments/assets/48a7f04d-b536-4e13-a85a-7d28838ac1f7)
-
 ## 🔨 Tools
 - Flutter: Developed the app UI and functionalities using flutter framework and dart codebase 
 - setState: Used it as a state management for the codebase

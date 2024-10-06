@@ -2,7 +2,8 @@
 This is a stunning finance news app with the option to view a highlight of the news in a dashboard or navigate to an external site to access the detailed news content.
 
 ## 📽️ Demo
-https://github.com/user-attachments/assets/a3eb61d0-6773-4103-b585-256932a12020
+https://github.com/user-attachments/assets/d5458782-88a3-4da9-aa09-c695cc6c08c1
+
 
 ## 🔨 Tools
 - Flutter: Developed the app UI and functionalities using flutter framework and dart codebase 
@@ -27,6 +28,7 @@ To get started with Blott Studio, follow these steps:
    cd blott
 2. Install dependencies:
    ```bash
+   flutter clean
    flutter pub get
 3. Run the app (in debug mode):
    ```bash

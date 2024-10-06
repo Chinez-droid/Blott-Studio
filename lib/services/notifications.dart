@@ -336,7 +336,7 @@ class NotificationsScreenState extends State<NotificationsScreen> {
                     child: Icon(
                       Icons.arrow_back,
                       color: Color(0xFF000000),
-                      size: 30,
+                      size: 24,
                     ),
                   ),
                 ),

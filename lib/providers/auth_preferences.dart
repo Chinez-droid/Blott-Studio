@@ -1,7 +1,6 @@
-// lib/providers/auth_preferences.dart
-
 import 'package:hive_flutter/hive_flutter.dart';
 
+// Hive local storage for user's names
 class AuthPreferences {
   static const String _boxName = 'authBox';
   static const String _firstNameKey = 'firstName';

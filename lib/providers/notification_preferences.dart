@@ -1,5 +1,6 @@
 import 'package:hive/hive.dart';
 
+// Hive local storage for user's notification preference
 class NotificationPreferences {
   static const String _boxName = 'notificationPreferences';
   static const String _allowedKey = 'notificationsAllowed';

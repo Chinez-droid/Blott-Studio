@@ -1,20 +1,29 @@
-import 'package:blott/auth/legal_name.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:blott/routes/dashboard.dart';
 import 'package:blott/providers/notification_preferences.dart';
 import 'package:blott/providers/auth_preferences.dart';
+import 'package:permission_handler/permission_handler.dart';
+import 'package:blott/auth/legal_name.dart';
 
 class NotificationsScreen extends StatefulWidget {
   const NotificationsScreen({super.key});
 
   @override
-  _NotificationsScreenState createState() => _NotificationsScreenState();
+  NotificationsScreenState createState() => NotificationsScreenState();
 }
 
-class _NotificationsScreenState extends State<NotificationsScreen> {
+class NotificationsScreenState extends State<NotificationsScreen> {
   bool _showBackButton = false;
   late String firstName;
+  @override
+  bool mounted = true;
+
+  @override
+  void dispose() {
+    mounted = false;
+    super.dispose();
+  }
 
   @override
   void initState() {
@@ -24,10 +33,14 @@ class _NotificationsScreenState extends State<NotificationsScreen> {
 
   Future<void> _loadFirstName() async {
     firstName = await AuthPreferences.getFirstName() ?? '';
-    setState(() {});
+    if (mounted) {
+      setState(() {});
+    }
   }
 
   Future<void> _showCustomNotificationDialog(BuildContext context) async {
+    if (!mounted) return;
+
     setState(() {
       _showBackButton = true;
     });
@@ -147,25 +160,57 @@ class _NotificationsScreenState extends State<NotificationsScreen> {
     );
   }
 
-  Future<void> _handleNotificationResponse(BuildContext context, bool allow) async {
-    // Set notification preference without requesting system permission
-    await NotificationPreferences.setNotificationsAllowed(allow);
-    _showCustomSnackBar(context, allow ? 'Notifications enabled' : 'Notifications disabled', allow);
+  Future<void> _handleNotificationResponse(
+      BuildContext context, bool allow) async {
+    if (!mounted) return;
 
-    // Navigate to the dashboard screen
-    Navigator.of(context).pushAndRemoveUntil(
-      MaterialPageRoute(builder: (context) => const DashboardScreen()),
-      (Route<dynamic> route) => false,
-    );
+    // Capture the context at the beginning of the function
+    final scaffoldMessenger = ScaffoldMessenger.of(context);
+    final navigator = Navigator.of(context);
+
+    if (allow) {
+      await NotificationPreferences.setNotificationsAllowed(true);
+
+      PermissionStatus status = await Permission.notification.request();
+
+      if (!mounted) return;
+
+      bool finalAllowState = status.isGranted;
+
+      await NotificationPreferences.setNotificationsAllowed(finalAllowState);
+
+      if (mounted) {
+        _showCustomSnackBar(
+            scaffoldMessenger,
+            finalAllowState
+                ? 'Notifications enabled'
+                : 'Notifications disabled',
+            finalAllowState);
+      }
+    } else {
+      await NotificationPreferences.setNotificationsAllowed(false);
+      if (mounted) {
+        _showCustomSnackBar(scaffoldMessenger, 'Notifications disabled', false);
+      }
+    }
+
+    if (mounted) {
+      navigator.pushAndRemoveUntil(
+        MaterialPageRoute(builder: (context) => const DashboardScreen()),
+        (Route<dynamic> route) => false,
+      );
+    }
   }
 
-  void _showCustomSnackBar(BuildContext context, String message, bool isSuccess) {
-    ScaffoldMessenger.of(context).showSnackBar(
+  void _showCustomSnackBar(ScaffoldMessengerState scaffoldMessenger,
+      String message, bool isSuccess) {
+    scaffoldMessenger.showSnackBar(
       SnackBar(
         content: Container(
           padding: const EdgeInsets.symmetric(vertical: 8, horizontal: 16),
           decoration: BoxDecoration(
-            color: isSuccess ? const Color(0xFF05021C) : const Color(0xFF05021C),
+            color:
+                isSuccess ? const Color(0xFF05021C) : const Color(0xFF05021C),
             borderRadius: BorderRadius.circular(8),
           ),
           child: Row(

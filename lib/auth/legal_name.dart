@@ -6,10 +6,10 @@ class LegalNameScreen extends StatefulWidget {
   const LegalNameScreen({super.key});
 
   @override
-  _LegalNameScreenState createState() => _LegalNameScreenState();
+  LegalNameScreenState createState() => LegalNameScreenState();
 }
 
-class _LegalNameScreenState extends State<LegalNameScreen> {
+class LegalNameScreenState extends State<LegalNameScreen> {
   final TextEditingController _firstNameController = TextEditingController();
   final TextEditingController _lastNameController = TextEditingController();
   final FocusNode _firstNameFocus = FocusNode();
@@ -19,7 +19,6 @@ class _LegalNameScreenState extends State<LegalNameScreen> {
   void initState() {
     super.initState();
     WidgetsBinding.instance.addPostFrameCallback((_) {
-      // This ensures the keyboard appears as soon as the screen is built
       FocusScope.of(context).requestFocus(_firstNameFocus);
     });
     _firstNameController.addListener(_updateFormValidity);

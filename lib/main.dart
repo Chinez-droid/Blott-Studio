@@ -1,4 +1,4 @@
-import 'package:blott/firebase/notifications.dart';
+import 'package:blott/services/notifications.dart';
 import 'package:blott/providers/notification_preferences.dart';
 import 'package:blott/providers/auth_preferences.dart';
 import 'package:flutter/material.dart';
@@ -17,7 +17,6 @@ void main() async {
   await NotificationPreferences.init();
   await AuthPreferences.init();
 
-  // Set preferred orientations
   await SystemChrome.setPreferredOrientations([
     DeviceOrientation.portraitUp,
   ]);
@@ -62,16 +61,22 @@ class InitialScreen extends StatelessWidget {
       builder: (context, snapshot) {
         if (snapshot.connectionState == ConnectionState.done) {
           if (snapshot.data != null && snapshot.data!.isNotEmpty) {
-            // Legal name is set, check if notifications are set up
-            return FutureBuilder<bool>(
+            // Legal name is set, check if notifications preference is set
+            return FutureBuilder<bool?>(
               future: NotificationPreferences.getNotificationsAllowed(),
               builder: (context, notificationSnapshot) {
-                if (notificationSnapshot.connectionState == ConnectionState.done) {
-                  // Regardless of the notification preference, navigate to the dashboard
-                  return const DashboardScreen();
+                if (notificationSnapshot.connectionState ==
+                    ConnectionState.done) {
+                  if (notificationSnapshot.data != null) {
+                    // Notification preference is set (either true or false), go to dashboard
+                    return const DashboardScreen();
+                  } else {
+                    // Notification preference not set, go to notifications screen
+                    return const NotificationsScreen();
+                  }
                 }
-                // While checking notification preferences, return an empty container
-                return const SizedBox.shrink();
+                // While checking notification preferences, show circular progress indicator
+                return const CircularProgressIndicator();
               },
             );
           } else {
@@ -79,8 +84,15 @@ class InitialScreen extends StatelessWidget {
             return const LegalNameScreen();
           }
         }
-        // While checking preferences, return an empty container
-        return const SizedBox.shrink();
+        // While checking preferences, show circular progress indicator
+        return const Scaffold(
+          backgroundColor: Color(0xFF000000),
+          body: Center(
+            child: CircularProgressIndicator(
+              valueColor: AlwaysStoppedAnimation<Color>(Colors.white),
+            ),
+          ),
+        );
       },
     );
   }

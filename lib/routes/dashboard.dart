@@ -1,6 +1,7 @@
 import 'package:blott/providers/auth_preferences.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
+import 'package:logger/logger.dart';
 import 'package:url_launcher/url_launcher.dart';
 import '../services/api_service.dart';
 
@@ -8,12 +9,13 @@ class DashboardScreen extends StatefulWidget {
   const DashboardScreen({super.key});
 
   @override
-  _DashboardScreenState createState() => _DashboardScreenState();
+  DashboardScreenState createState() => DashboardScreenState();
 }
 
-class _DashboardScreenState extends State<DashboardScreen> {
-  String? firstName; // Change to nullable type
+class DashboardScreenState extends State<DashboardScreen> {
+  String? firstName;
   final ApiService _apiService = ApiService();
+  final Logger _logger = Logger();
   List<NewsItem> _news = [];
   bool _isLoading = true;
   bool _hasError = false;
@@ -28,7 +30,7 @@ class _DashboardScreenState extends State<DashboardScreen> {
   Future<void> _loadFirstName() async {
     final name = await AuthPreferences.getFirstName();
     setState(() {
-      firstName = name ?? ''; // Use null-aware operator
+      firstName = name ?? '';
     });
   }
 
@@ -41,7 +43,8 @@ class _DashboardScreenState extends State<DashboardScreen> {
         _hasError = false;
       });
     } catch (e) {
-      print('Error fetching news: $e');
+      _logger.e('Error fetching news',
+          error: e, stackTrace: StackTrace.current);
       setState(() {
         _isLoading = false;
         _hasError = true;

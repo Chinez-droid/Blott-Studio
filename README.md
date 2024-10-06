@@ -28,7 +28,6 @@ To get started with Blott Studio, follow these steps:
    cd blott
 2. Install dependencies:
    ```bash
-   flutter clean
    flutter pub get
 3. Run the app (in debug mode):
    ```bash
